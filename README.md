@@ -9,7 +9,8 @@ It may even work with Python 2.7.
 Just clone the repository to use the script. 
 At the moment no non-standard libraries are necessary to run it.
 
-### Running the script
+### Running the Generator
+#### Prerequisites
 To use the script you need to have bsp.csv file present in the directory you are running the script from. 
 The first row must contain a header with column descriptions.
 The following Keywords must be present and will be the only ones that are used by the script:
@@ -22,12 +23,17 @@ The following Keywords must be present and will be the only ones that are used b
 The order of these keywords does not matter.
 Any other columns you want to use should have no influence on the script.
 
+#### Running the script
 If such a csv file is present just call the script from the shell using
 ```
-python bsp_generator.py
+python bsp_generator.py [options]
 ```
 and wait for it to finish.
 A bsp.h file should appear in the directory.
+
+#### Command Line Options
+* -i <filename> | --input=<filename> Change the input file to <filename>
+* -o <filename> | --output=<filename> Change the output file to <filename>
 
 ## Contributing
 ### Create an issue
@@ -44,15 +50,15 @@ and use the bug label for that issue.
 If it is a feature request use the enhancement label and include the following information:
 * What feature do you want to be added?
 * Why do you want to change it?
-* (Optional) How would you achive this feature?
+* (Optional) How would you achieve this feature?
 
 ### Writing code
-If you are writing code, please adhere to the coding styleguide in PEP8 and PEP257.
+If you are writing code, please adhere to the coding style guide in PEP8 and PEP257.
 To ensure compliance run the [pep8](https://pypi.org/project/pep8/) checker on your code. 
 It should return with no errors.
 
 Currently no automatic test are available.
-If you are fixing a bug, check the output file if the bugfix has no side effects.
+If you are fixing a bug, check the output file if the bug fix has no side effects.
 If you are adding a feature, test it with different inputs and don't forget how it reacts to special characters in the csv-file.
 
 ### Pull requests
