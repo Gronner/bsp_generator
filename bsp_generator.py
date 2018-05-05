@@ -21,7 +21,7 @@ HEAD_DOCSTRING = ("/* -------------------------------------------- *\n"
                   "\n")
 
 ARGSTRING = 'i:o:'
-ARGLIST = ['input=', 'output=', 'docstring=']
+ARGLIST = ['input=', 'output=', 'docstring=', 'include=']
 
 
 def specification_file_read(spec_file_name):
@@ -71,7 +71,8 @@ def bsp_file_write(bsp_file_name, imports, entries):
 
         bsp_file.write(HEAD_INCLUDE_GUARD)
         bsp_file.write(HEAD_DOCSTRING)
-        bsp_file.write(build_import_header(imports))
+        if imports:
+            bsp_file.write(build_import_header(imports))
 
         for entry in entries:
             if current_module != entry['Module'] or \
@@ -101,7 +102,7 @@ def create_docstring(docstring_file_name):
 if __name__ == "__main__":
     target_file_name = 'bsp.h'
     spec_file_name = 'bsp.csv'
-    imports = ['stdint', 'stm32f411_gpio']
+    imports = []
     opts, args = getopt.getopt(sys.argv[1:], ARGSTRING, ARGLIST)
     for opt, arg in opts:
         if opt in ('-i', '--input'):
@@ -110,6 +111,8 @@ if __name__ == "__main__":
             target_file_name = arg
         elif opt in ('--docstring'):
             HEAD_DOCSTRING = create_docstring(arg)
+        elif opt in ('--include'):
+            imports = arg.split(' ')
 
     spec_entries = specification_file_read(spec_file_name)
     bsp_file_write(target_file_name, imports, spec_entries)
