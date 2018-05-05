@@ -7,18 +7,18 @@ Description: A BSP-file generator. Takes a comma seperated value file and
 Style-Guide: PEP8
 """
 import csv
+import sys
+import getopt
 
 
 HEAD_INCLUDE_GUARD = '#ifndef __BSP_INCLUDED__\n#define __BSP_INCLUDED__\n'
 BOT_INCLUDE_GUARD = '\n#endif //__BSP_INCLUDED__'
-HEAD_DOCSTRING = \
-"""
-/* -------------------------------------------- *
- * This an automatic generated file.            *
- * Do not alter it, change the specification csv*
- * instead.                                     *
- * -------------------------------------------- */
-\n"""
+HEAD_DOCSTRING = ("/* -------------------------------------------- *\n"
+                  " * This an automatic generated file.            *\n"
+                  " * Do not alter it, change the specification csv*\n"
+                  " * instead.                                     *\n"
+                  " * -------------------------------------------- */\n"
+                  "\n")
 
 
 def specification_file_read(spec_file_name):
@@ -84,5 +84,16 @@ if __name__ == "__main__":
     target_file_name = 'bsp.h'
     spec_file_name = 'bsp.csv'
     imports = ['stdint', 'stm32f411_gpio']
+
+    opts, args = getopt.getopt(sys.argv[1:], 'i:o:', ['input=', 'output='])
+    for opt, arg in opts:
+        if opt in ('-i', '--input'):
+            spec_file_name = arg
+        elif opt in ('-o', '--output'):
+            target_file_name = arg
+
     spec_entries = specification_file_read(spec_file_name)
     bsp_file_write(target_file_name, imports, spec_entries)
+
+    print("Specification in {source} written to {target}!".format(source=spec_file_name,
+                                                                  target=target_file_name))
