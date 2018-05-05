@@ -77,6 +77,7 @@ def bsp_file_write(bsp_file_name, imports, entries):
             if current_module != entry['Module'] or \
                current_submodule != entry['Submodule']:
                 current_module = entry['Module']
+                current_submodule = entry['Submodule']
                 bsp_file.write(build_module_seperator(entry['Module'],
                                                       entry['Submodule']))
             bsp_file.write(build_line(entry))
