@@ -14,11 +14,14 @@ import getopt
 HEAD_INCLUDE_GUARD = '#ifndef __BSP_INCLUDED__\n#define __BSP_INCLUDED__\n'
 BOT_INCLUDE_GUARD = '\n#endif //__BSP_INCLUDED__'
 HEAD_DOCSTRING = ("/* -------------------------------------------- *\n"
-                  " * This an automatic generated file.            *\n"
+                  " * This an is automatic generated file.         *\n"
                   " * Do not alter it, change the specification csv*\n"
                   " * instead.                                     *\n"
                   " * -------------------------------------------- */\n"
                   "\n")
+
+ARGSTRING = 'i:o:'
+ARGLIST = ['input=', 'output=', 'docstring=']
 
 
 def specification_file_read(spec_file_name):
@@ -80,17 +83,32 @@ def bsp_file_write(bsp_file_name, imports, entries):
 
         bsp_file.write(BOT_INCLUDE_GUARD)
 
+def create_docstring(docstring_file_name):
+    lines = ''
+    with open(docstring_file_name, 'r') as docstring_file:
+        lines = docstring_file.read().split('\n')
+
+    line_max_len = len(max(lines, key=len)) + 1
+
+    docstring = '/* {filler} *\n'.format(filler=line_max_len*'-')
+    for line in lines[:-1]:
+        docstring += ' * {line} *\n'.format(line=line.ljust(line_max_len))
+    docstring += ' * {filler} */\n\n'.format(filler=line_max_len*'-')
+
+    return docstring
+
 if __name__ == "__main__":
     target_file_name = 'bsp.h'
     spec_file_name = 'bsp.csv'
     imports = ['stdint', 'stm32f411_gpio']
-
-    opts, args = getopt.getopt(sys.argv[1:], 'i:o:', ['input=', 'output='])
+    opts, args = getopt.getopt(sys.argv[1:], ARGSTRING, ARGLIST)
     for opt, arg in opts:
         if opt in ('-i', '--input'):
             spec_file_name = arg
         elif opt in ('-o', '--output'):
             target_file_name = arg
+        elif opt in ('--docstring'):
+            HEAD_DOCSTRING = create_docstring(arg)
 
     spec_entries = specification_file_read(spec_file_name)
     bsp_file_write(target_file_name, imports, spec_entries)

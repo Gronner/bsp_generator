@@ -34,6 +34,8 @@ A bsp.h file should appear in the directory.
 #### Command Line Options
 * -i \<filename> | --input=\<filename> Change the input file to \<filename>
 * -o \<filename> | --output=\<filename> Change the output file to \<filename>
+* --docstring=\<filename> Instead of the standard docstring, read out the 
+docstring from a file.
 
 #### Output
 The Output is a C header file with the following structure:
