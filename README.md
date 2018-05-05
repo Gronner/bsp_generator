@@ -35,6 +35,29 @@ A bsp.h file should appear in the directory.
 * -i \<filename> | --input=\<filename> Change the input file to \<filename>
 * -o \<filename> | --output=\<filename> Change the output file to \<filename>
 
+#### Output
+The Output is a C header file with the following structure:
+```
+#ifndef __BSP_INCLUDED__
+#define __BSP_INCLUDED__
+
+<Multiline Docstring>
+
+<includes>
+
+// Defines for MODULE1
+#define MODULE1_FUNCTION1 ADDRESS/VALUE1 [// COMMENT1]
+#define MODULE1_FUNCTION2 ADDRESS/VALUE2 [// COMMENT2]
+...
+
+// Defindes for MODULE2 -> SUBMODULE21
+#define MODULE2_SUBMODULE21_FUNCTION1 ADDRESS/VALUE1 [// COMMENT1]
+#define MODULE2_SUBMODULE21_FUNCTION2 ADDRESS/VALUE2 [// COMMENT1]
+...
+
+#endif // __BSP_INCLUDED__
+```
+
 ## Contributing
 ### Create an issue
 If you want to add functionality or fix a bug, create an issue first.
