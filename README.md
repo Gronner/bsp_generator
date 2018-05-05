@@ -32,8 +32,8 @@ and wait for it to finish.
 A bsp.h file should appear in the directory.
 
 #### Command Line Options
-* -i <filename> | --input=<filename> Change the input file to <filename>
-* -o <filename> | --output=<filename> Change the output file to <filename>
+* -i \<filename> | --input=\<filename> Change the input file to \<filename>
+* -o \<filename> | --output=\<filename> Change the output file to \<filename>
 
 ## Contributing
 ### Create an issue
