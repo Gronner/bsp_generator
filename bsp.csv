@@ -1,5 +1,5 @@
 Module,Submodule,Function,Address/Value,Comment,Additional Information
-LED,,PORT,0x4002 0000,LEDs are located on Port D,This should not be printed
+LED,,PORT,(*0x4002 0000),LEDs are located on Port D,This should not be printed
 LED,,GREEN,GPIO_Pin_12,Green LED is on pin 12,
 LCD,,PORT,GPIOD,LCD pins are located on Port D,
 LCD,CMD,8b,0x03,Activates 8bit Mode,
