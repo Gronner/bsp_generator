@@ -66,7 +66,7 @@ The Output is a C header file with the following structure:
 ### Create an issue
 If you want to add functionality or fix a bug, create an issue first.
 If it is a bug include the following information:
-* What were doing? -> What steps are necessary to reproduce the error?
+* What were you doing? -> What steps are necessary to reproduce the error?
 * What were you expecting to happen? -> Why is what is happening a bug?
 * What did happen? -> How did the bug manifest itself?
 * System/Environment information
