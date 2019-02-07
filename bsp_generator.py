@@ -48,8 +48,8 @@ def _build_line(entry):
     Create a define statement in a single line.
     Args:
         - entry(Dictionary(String:String)): Dictionary containing a description
-          of the target define statement using the Keys: 'Module', 'Address/Value',
-          'Function', 'Submodule' (opt), 'Comment' (opt)
+          of the target define statement using the Keys: 'Module',
+          'Address/Value', 'Function', 'Submodule' (opt), 'Comment' (opt)
     Returns:
         - (String): Define statement of the form:
           #define Module_Submodule_Function Address/Value // Comment
@@ -71,7 +71,8 @@ def _build_module_seperator(module, submodule=''):
     Creates a string line with a seperator for module and submodule.
     Args:
         - module (String): Name of the module for the seperator
-        - submodule (String): Name of the submodule for the seperator (default: empty string)
+        - submodule (String): Name of the submodule for the seperator (default:
+          empty string)
     Returns:
         - (String): Seperator of the form: // Defines for module->submodule
     """
@@ -99,14 +100,15 @@ def _build_import_header(imports):
 
 def bsp_file_write(bsp_file_name, imports, entries):
     """
-    Writes the configuration to a header file based on the libraries to import and
-    the specified define statements.
+    Writes the configuration to a header file based on the libraries to import
+    and the specified define statements.
     Args:
         - bsp_file_name (String): Target header file
-        - imports (List(String)): List of libraries to import, e.g. 'stdlib', 'time'
-        - entries (List(Dictionary(String:String))): Dictionaries containing the
-          description of the desired define statements with the keys:
-          'Module', 'Address/Value', 'Function', 'Submodule' (opt), 'Comment' (opt)
+        - imports (List(String)): List of libraries to import, e.g. 'stdlib'
+        - entries (List(Dictionary(String:String))): Dictionaries containing
+          the description of the desired define statements with the keys:
+          'Module', 'Address/Value', 'Function', 'Submodule' (opt),
+          'Comment' (opt)
     """
     with open(bsp_file_name, 'w') as bsp_file:
         current_module = ''
@@ -127,6 +129,7 @@ def bsp_file_write(bsp_file_name, imports, entries):
             bsp_file.write(_build_line(entry))
 
         bsp_file.write(BOT_INCLUDE_GUARD)
+
 
 def create_docstring(docstring_file_name):
     """
