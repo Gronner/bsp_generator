@@ -25,6 +25,14 @@ ARGLIST = ['input=', 'output=', 'docstring=', 'include=']
 
 
 def specification_file_read(spec_file_name):
+    """
+    Returns the input from a CSV file as a dictionary.
+    Args:
+        - spec_file_name (String): Path to the CSV file.
+    Returns:
+        - (Dictionary(String:String)): Returns a list of Dictionaries mapping
+          the tables row entrys to the column headers.
+    """
     entries = []
 
     with open(spec_file_name, 'r') as spec_file:
@@ -35,7 +43,17 @@ def specification_file_read(spec_file_name):
     return entries
 
 
-def build_line(entry):
+def _build_line(entry):
+    """
+    Create a define statement in a single line.
+    Args:
+        - entry(Dictionary(String:String)): Dictionary containing a description
+          of the target define statement using the Keys: 'Module', 'Address/Value',
+          'Function', 'Submodule' (opt), 'Comment' (opt)
+    Returns:
+        - (String): Define statement of the form:
+          #define Module_Submodule_Function Address/Value // Comment
+    """
     line = '#define '
     line += '{}_'.format(entry['Module'])
     if entry['Submodule']:
@@ -48,7 +66,15 @@ def build_line(entry):
     return line
 
 
-def build_module_seperator(module, submodule):
+def _build_module_seperator(module, submodule=''):
+    """
+    Creates a string line with a seperator for module and submodule.
+    Args:
+        - module (String): Name of the module for the seperator
+        - submodule (String): Name of the submodule for the seperator (default: empty string)
+    Returns:
+        - (String): Seperator of the form: // Defines for module->submodule
+    """
     line = '\n// Defines for {}'.format(module)
     if submodule:
         line += '-> {}'.format(submodule)
@@ -56,7 +82,14 @@ def build_module_seperator(module, submodule):
     return line
 
 
-def build_import_header(imports):
+def _build_import_header(imports):
+    """
+    Creates an import header for a list of libraries.
+    Args:
+        - imports (List(String)): List of n libraries, e.g. 'stdlib', 'time'
+    Returns:
+        - (String): n lines of the form: #include <library.h>
+    """
     header = ''
     for lib in imports:
         header += '#include <{}.h>\n'.format(lib)
@@ -65,6 +98,16 @@ def build_import_header(imports):
 
 
 def bsp_file_write(bsp_file_name, imports, entries):
+    """
+    Writes the configuration to a header file based on the libraries to import and
+    the specified define statements.
+    Args:
+        - bsp_file_name (String): Target header file
+        - imports (List(String)): List of libraries to import, e.g. 'stdlib', 'time'
+        - entries (List(Dictionary(String:String))): Dictionaries containing the
+          description of the desired define statements with the keys:
+          'Module', 'Address/Value', 'Function', 'Submodule' (opt), 'Comment' (opt)
+    """
     with open(bsp_file_name, 'w') as bsp_file:
         current_module = ''
         current_submodule = ''
@@ -72,20 +115,30 @@ def bsp_file_write(bsp_file_name, imports, entries):
         bsp_file.write(HEAD_INCLUDE_GUARD)
         bsp_file.write(HEAD_DOCSTRING)
         if imports:
-            bsp_file.write(build_import_header(imports))
+            bsp_file.write(_build_import_header(imports))
 
         for entry in entries:
             if current_module != entry['Module'] or \
                current_submodule != entry['Submodule']:
                 current_module = entry['Module']
                 current_submodule = entry['Submodule']
-                bsp_file.write(build_module_seperator(entry['Module'],
-                                                      entry['Submodule']))
-            bsp_file.write(build_line(entry))
+                bsp_file.write(_build_module_seperator(entry['Module'],
+                                                       entry['Submodule']))
+            bsp_file.write(_build_line(entry))
 
         bsp_file.write(BOT_INCLUDE_GUARD)
 
 def create_docstring(docstring_file_name):
+    """
+    Instead of using the default header comment a file containing a custom
+    on can be used to generate the header comment.
+    Args:
+        - docstring_file_name (String): Path to the text file containing the
+          header comment without comment markers (// or /* */)
+    Returns:
+        - (String): The header comment specified in the input file enclosed by
+          a multi line comment enclosue (/* */)
+    """
     lines = ''
     with open(docstring_file_name, 'r') as docstring_file:
         lines = docstring_file.read().split('\n')
